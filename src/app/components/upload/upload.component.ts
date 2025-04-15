@@ -18,36 +18,34 @@ export class UploadComponent {
   uploadedFileURL: any;
   downloadURL = ''
   selected = false
+  isChecked = false;
 
   onFileSelected(event:any) {
     const file = event.target.files[0];
-    console.log('file:', file)
     this.selectedFile = file;
 
   }
 
   onFileDropped(event:any) {
     const file = event
-    console.log('file received from directive:', file)
     this.selectedFile = file;
   }
 
   upload() {
-
     if (this.selectedFile) {
-      console.log('this.selectedFile:', this.selectedFile)
       const formData = new FormData();
       formData.append('file', this.selectedFile);
-      console.log('formData:', formData)
       this.uploadService.uploadFile(formData).subscribe({
         next: (val:any)=> {
           console.log('File uploaded successfully', val)
           this.downloadURL = this.uploadService.API_URL + val.path
           this.uploadedFileURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.downloadURL)
-          console.log('this.uploadedFileURL:', this.uploadedFileURL)
         },
         error: (err) => {
           console.error('Error uploading file', err)
+        },
+        complete: () => {
+          console.log('File upload complete')
         }
       })
     } else {
