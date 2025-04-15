@@ -1,0 +1,45 @@
+<div class="flex">
+  <input
+    (change)="onFileSelected($event)"
+    hidden
+    #inputRef
+    type="file"
+    class="form-control"
+    placeholder="Username"
+    aria-label="Username"
+    aria-describedby="basic-addon1"
+  />
+  <section class="wrapper">
+    <div
+      class="drag-zone"
+      appDragDrop
+      (click)="inputRef.click()"
+      (dropped)="onFileDropped($event)"
+    >
+      <span>{{
+        this.selectedFile ? this.selectedFile.name : "DRAG AND DROP"
+      }}</span>
+    </div>
+    <label (change)="upload()" class="toggle-switch">
+      <input type="checkbox" />
+      <div class="slider"></div>
+    </label>
+  </section>
+
+  <section class="wrapper" style="flex: 1">
+    <iframe
+      style="flex: 1"
+      class="preview-iframe"
+      [src]="pdfURL"
+      frameborder="0"
+    ></iframe>
+    <button
+      [disabled]="uploadedFileURL?.length === 0"
+      (click)="download()"
+      type="button"
+      class="btn btn-primary"
+    >
+      Download
+    </button>
+  </section>
+</div>
